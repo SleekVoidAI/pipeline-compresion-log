@@ -1,3 +1,6 @@
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![Status](https://img.shields.io/badge/status-complete-success)
+
 PIPELINE DE COMPRESIÓN Y GENERACIÓN DE LOG - PYTHON
 
 DESCRIPCIÓN:
