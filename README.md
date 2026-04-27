@@ -4,9 +4,9 @@
 ![Automation](https://img.shields.io/badge/Automation-Pipeline-green)
 ![Made with love](https://img.shields.io/badge/Made%20with-❤-red)
 
-PIPELINE DE COMPRESIÓN Y GENERACIÓN DE LOG - PYTHON
+## PIPELINE DE COMPRESIÓN Y GENERACIÓN DE LOG - PYTHON
 
-DESCRIPCIÓN:
+## DESCRIPCIÓN:
 
 Este proyecto implementa un pipeline automatizado para la compresión de archivos y generación de logs detallados en formato CSV.
 
@@ -14,7 +14,7 @@ El sistema procesa una carpeta raíz que contiene múltiples subcarpetas, compri
 
 Durante el proceso, se recolectan métricas relevantes como tamaño de archivos, cantidad de registros, hash MD5 y tiempos de compresión, permitiendo auditoría y trazabilidad completa.
 
-FUNCIONALIDADES PRINCIPALES:
+## FUNCIONALIDADES PRINCIPALES:
 
 Compresión individual de archivos en formato .zip
 Generación de estructura intermedia de trabajo
@@ -27,7 +27,7 @@ Lectura opcional de registros en archivos .dbf
 Medición del tiempo de compresión (ZIP y TAR)
 Eliminación automática de carpeta temporal
 
-TECNOLOGÍAS UTILIZADAS:
+## TECNOLOGÍAS UTILIZADAS:
 
 Python
 pathlib
@@ -39,7 +39,7 @@ shutil
 time
 dbfread
 
-FLUJO DEL PROCESO:
+## FLUJO DEL PROCESO:
 
 Lectura de carpeta raíz
 Filtrado de subcarpetas según configuración
@@ -50,7 +50,7 @@ Cálculo de métricas (tamaño, MD5, tiempos)
 Generación de log en CSV
 Eliminación de archivos temporales
 
-ESTRUCTURA ESPERADA:
+## ESTRUCTURA ESPERADA:
 
 El script trabaja con una carpeta raíz que contiene subcarpetas:
 
@@ -88,7 +88,7 @@ Procesar todas las carpetas sin filtro
 Leer configuración desde archivo externo (JSON/CSV)
 Usar diccionarios para mapeo de nombres
 
-RESULTADOS GENERADOS:
+## RESULTADOS GENERADOS:
 
 El sistema produce:
 
@@ -97,7 +97,7 @@ Un archivo consolidado en formato .tar.gz
 Un archivo .csv con el log del proceso
 Carpeta temporal de trabajo (eliminada automáticamente)
 
-COLUMNAS DEL LOG:
+## COLUMNAS DEL LOG:
 
 Archivo
 Tamaño de archivos (MB)
@@ -108,7 +108,7 @@ Registros DBF
 Tiempo Compresión
 Notificación
 
-CONFIGURACIÓN:
+## CONFIGURACIÓN:
 
 Antes de ejecutar el script, se deben modificar las siguientes rutas:
 
@@ -117,25 +117,25 @@ ruta_trabajo = "RUTA_TEMPORAL"
 ruta_salida = "RUTA_DE_SALIDA"
 ruta_log = "RUTA_DEL_LOG"
 
-EJECUCIÓN:
+## EJECUCIÓN:
 
 Ejecutar desde terminal:
 
 python pipeline_compresion_log.py
 
-DEPENDENCIAS:
+## DEPENDENCIAS:
 
 Instalar la librería necesaria:
 
 pip install dbfread
 
-NOTAS:
+## NOTAS*:
 
 No incluir rutas personales en repositorios públicos
 No subir archivos comprimidos generados
 No subir logs con información sensible
 El script está diseñado para procesamiento batch de grandes volúmenes de archivos
 
-AUTOR:
+## AUTOR:
 
 Jorge Fernando Ortiz Bravo
