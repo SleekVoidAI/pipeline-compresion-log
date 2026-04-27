@@ -64,7 +64,7 @@ R03/
 
 Cada subcarpeta contiene archivos a procesar.
 
-CONFIGURACIÓN DE CARPETAS A PROCESAR:
+## CONFIGURACIÓN DE CARPETAS A PROCESAR:
 
 Las subcarpetas a procesar se definen mediante una lista configurable dentro del código:
 
@@ -129,12 +129,6 @@ Instalar la librería necesaria:
 
 pip install dbfread
 
-## NOTAS*:
-
-No incluir rutas personales en repositorios públicos
-No subir archivos comprimidos generados
-No subir logs con información sensible
-El script está diseñado para procesamiento batch de grandes volúmenes de archivos
 
 ## AUTOR:
 
