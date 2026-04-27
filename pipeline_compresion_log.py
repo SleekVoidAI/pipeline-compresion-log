@@ -1,9 +1,9 @@
 ###### 17 P. 
-# PIPELINE_COMPRESION_LOG.py 3.0
+# PIPELINE_COMPRESION_LOG.py 4.0
 # Objetivo: Comprimir archivos y carpetas en formatos ZIP y TAR.GZ y crear un log con informacion de los archivos como tamaño en MB, tiempo de compresion, cantidad de archivos por carpeta y MD5 de carpeta RAIZ comprimida.
-# Notas Version 3.0: Se añade funcion para contar el tiempo de compresion 
+# Notas Version 4.0: Se añade funcion para registrar la fecha de compresion | se agrega columna para el log.csv donde se registra la fecha de compresion | Se agrega funcion para agregar el total de registros de los archivos DBF a la carpeta nodriza.
 # Creación 20/04/2026
-# Modificación: 24/04/2026
+# Modificación: 27/04/2026
 # Autor: Jorge Fernando Ortiz Bravo
 ######
 
@@ -16,6 +16,7 @@ import csv
 from dbfread import DBF
 import shutil
 import time
+from datetime import datetime
 
 
 ###### 
@@ -130,6 +131,23 @@ def comprimir_carpeta_tar(ruta_carpeta: str | Path, ruta_salida: str) -> tuple[P
     except Exception:
         return None, "no se pudo comprimir", 0
 
+# Fecha y hora actual para el log
+def obtener_fecha_hora() -> str:
+    return datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+
+# Suma total de registros de todos los DBF dentro de una carpeta
+def contar_registros_dbf_totales(ruta_carpeta: Path) -> int:
+    total_registros = 0
+
+    for archivo in ruta_carpeta.rglob("*"):
+        if archivo.is_file() and archivo.suffix.lower() == ".dbf":
+            resultado = contar_registros_dbf(archivo)
+
+            if isinstance(resultado, int):
+                total_registros += resultado
+
+    return total_registros
 
 ###
 # Creacion estructura interna
@@ -161,10 +179,18 @@ def crear_estructura_zip_interna(ruta_raiz: str, ruta_trabajo: str) -> Path:
 # LOG
 ######
 
+# Escribir log en formato CSV
 def escribir_log_csv(registros: list[dict], ruta_log: Path) -> None:
     columnas = [
-        "Archivo","Tamaño de archivos","Cantidad de archivos",
-        "MD5","Tipo de Archivo","Registros DBF", "Tiempo Compresion","Notificacion"
+        "Fecha",
+        "Archivo",
+        "Tamaño de archivos",
+        "Cantidad de archivos",
+        "MD5",
+        "Tipo de Archivo",
+        "Registros DBF",
+        "Tiempo Compresion",
+        "Notificacion"
     ]
 
     ruta_log.parent.mkdir(parents=True, exist_ok=True)
@@ -174,6 +200,7 @@ def escribir_log_csv(registros: list[dict], ruta_log: Path) -> None:
         writer.writeheader()
         writer.writerows(registros)
 
+# Registrar log de compresión
 def generar_log_compresion(
     ruta_raiz: str,
     ruta_trabajo: str,
@@ -191,14 +218,16 @@ def generar_log_compresion(
     # Crear estructura con ZIP internos
     carpeta_preparada = crear_estructura_zip_interna(ruta_raiz, ruta_trabajo)
 
-    # RAIZ original
+# RAIZ original
     registros.append({
+        "Fecha": obtener_fecha_hora(),
         "Archivo": raiz.name,
         "Tamaño de archivos": tamaño_mb_carpeta_nodriza(raiz),
         "Cantidad de archivos": contar_archivos(raiz),
         "MD5": "",
-        "Tipo de Archivo": "carpeta",
-        "Registros DBF": "",
+        "Tipo de Archivo": "carpeta nodriza",
+        "Registros DBF": contar_registros_dbf_totales(raiz) if calcular_dbf else "",
+        "Tiempo Compresion": "",
         "Notificacion": "",
     })
 
@@ -206,11 +235,13 @@ def generar_log_compresion(
         if carpeta.is_dir() and carpeta.name in Carpetas_Objetivo:
 
             registros.append({
+                "Fecha": obtener_fecha_hora(),
                 "Archivo": carpeta.name,
                 "Tamaño de archivos": tamaño_mb_carpeta(carpeta),
                 "Cantidad de archivos": contar_archivos(carpeta),
                 "MD5": "",
                 "Tipo de Archivo": "carpeta",
+                "Tiempo Compresion": "",
                 "Registros DBF": "",
                 "Notificacion": "",
             })
@@ -232,11 +263,13 @@ def generar_log_compresion(
 
                     # archivo original
                     registros.append({
+                        "Fecha": obtener_fecha_hora(),
                         "Archivo": archivo.name,
                         "Tamaño de archivos": tamaño_mb_archivo(archivo),
                         "Cantidad de archivos": "",
                         "MD5": "",
                         "Tipo de Archivo": ".dbf",
+                        "Tiempo Compresion": "",
                         "Registros DBF": registros_dbf,
                         "Notificacion": notificacion,
                     })
@@ -245,6 +278,7 @@ def generar_log_compresion(
                     zip_generado, notif_zip, tiempo_zip = comprimir_archivo_zip(archivo, carpeta_zip)
 
                     registros.append({
+                        "Fecha": obtener_fecha_hora(),
                         "Archivo": zip_generado.name,
                         "Tamaño de archivos": tamaño_mb_archivo(zip_generado),
                         "Cantidad de archivos": "",
@@ -258,6 +292,7 @@ def generar_log_compresion(
     tar_path, notif_tar, tiempo_tar = comprimir_carpeta_tar(carpeta_preparada, salida)
 
     registros.append({
+        "Fecha": obtener_fecha_hora(),
         "Archivo": tar_path.name,
         "Tamaño de archivos": tamaño_mb_archivo(tar_path),
         "Cantidad de archivos": "",
