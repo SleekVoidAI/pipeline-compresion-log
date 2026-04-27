@@ -1,5 +1,8 @@
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Status](https://img.shields.io/badge/status-complete-success)
+![Made with Python](https://img.shields.io/badge/Made%20with-Python-blue?logo=python)
+![Automation](https://img.shields.io/badge/Automation-Pipeline-green)
+![Made with love](https://img.shields.io/badge/Made%20with-❤-red)
 
 PIPELINE DE COMPRESIÓN Y GENERACIÓN DE LOG - PYTHON
 
